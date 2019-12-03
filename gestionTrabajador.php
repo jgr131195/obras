@@ -26,28 +26,32 @@
 
 
 
-<!-- Inicio form -->
+
     <div class="container">
-        <h1>Nueva obra</h1>
-        <form action="registraObra.php" method="post">
-            <div class="form-group container">
-                <div class="row">
-                    <input class="form-control col-6" type="text" name="nombre" placeholder="Nombre" required />  
-                    <input class="form-control col-6" type="text" name="direccion" placeholder="Direccion" required />  
-                </div>
-            </div>
-            <div class="form-group container">
-                <div class="row">
-                    <input class="form-control col-6" type="text" name="latitud" placeholder="latitud" required />  
-                    <input class="form-control col-6" type="text" name="altitud" placeholder="altitud" required />  
-                </div>
-            </div>                                  
-       
-            <div class="container">
-                <div class="row">
-                    <select class="form-control col-6" name="cliente">
+        <h1>Gestion trabajador</h1>
+        <form action="registraTrabajadorEnObra.php" method="post">
+        <div class="row">
+            <div class="container col-6">
+                <select class="form-control" name="obra">
                     <?php
-                        $sql = "SELECT Usuario_id, Usuario_nombre, Usuario_nick FROM usuarios WHERE Usuario_perfil LIKE 'cliente'";
+                        $sql = "SELECT Obra_id, Obra_nombre FROM obras ";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                $id = $row['Obra_id'];
+                                $nom = $row['Obra_nombre'];            
+                                echo "<option value='$id'>$nom </option>";
+                            }
+                        } else {
+                            echo "0 results";
+                        }
+                    ?>
+                </select>            
+            </div>
+            <div class="container col-6">
+                <select class="form-control" name="trabajador">
+                    <?php
+                        $sql = "SELECT Usuario_id, Usuario_nombre, Usuario_nick FROM usuarios WHERE Usuario_perfil LIKE 'trabajador'";
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             while($row = $result->fetch_assoc()) {
@@ -58,33 +62,16 @@
                             }
                         } else {
                             echo "0 results";
-                        }
-                        
+                        }  
                     ?>
-                    </select>
-                    <select class="form-control col-6" name="trabajador">
-                    <?php
-                        $sql = "SELECT Usuario_id, Usuario_nombre, Usuario_nick FROM usuarios WHERE Usuario_id NOT IN (SELECT Obra_jefe FROM obras) AND Usuario_perfil LIKE 'trabajador' ";
-                        $result = $conn->query($sql);
-                        if ($result->num_rows > 0) {
-                            while($row = $result->fetch_assoc()) {
-                                $id = $row['Usuario_id'];
-                                $nom = $row['Usuario_nombre'];
-                                $nick = $row['Usuario_nick'];                
-                                echo "<option value='$id'>$nom alias $nick</option>";
-                            }
-                        } else { 
-                            echo "0 results";
-                        }
-                        $conn->close();
-                    ?>
-                    </select>                    
-                </div>
+                </select>            
             </div>
-    <!-- Fin form -->
-            <input class="d-flex justifi-content-end btn btn-danger" type="submit" value="Entrar" />
-        </form>   
-        <a class="btn btn-danger" href="perfilAdmin.php">Volver menu</a>                         
+        </div>
+            <input class="btn btn-danger" type="submit" value="Agregar trabajador a la obra" />
+            <a class="btn btn-danger" href="perfilAdmin.php">Volver menu</a>                   
+        </form>
+
+              
     </div>
 
 
