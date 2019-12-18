@@ -5,14 +5,23 @@
     $trabajador = $_POST['trabajador'];
     
     $sql = "SELECT * FROM trabajadores_obra WHERE Usuario_id LIKE '$trabajador'";
+
+    //UPDATE trabajadores_obra SET fecha_fin='2019-12-05' WHERE obra_id='1' AND usuario_id='2'
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
-            $id = $row['Usuario_id'];
-            $nom = $row['Usuario_nombre'];
-            $nick = $row['Usuario_nick'];                
-            echo "<option value='$id'>$nom alias $nick</option>";
+            $obra_id = $row['obra_id'];
+            $usuario_id = $row['usuario_id'];
+            $fecha_inicio = $row['fecha_inicio'];
+            $fecha_fin = $row['fecha_fin'];
         }
+        $fecha_actual = date("Y-m-d");
+        
+
+
+
+        
+
     } else {
         //Inserta si no encuentra al trabajador
         $fecha_actual = date("Y-m-d");
